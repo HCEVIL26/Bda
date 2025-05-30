@@ -1,0 +1,70 @@
+To open Hive prompt: hive
+
+To check available databases: show databases;
+
+To create a database: create database if not exists <database_name>;
+
+One can create a database with some property: create database <database_name> with DBPROPERTIES ('name'='value'); eg.('creator'='Name', 'Date'='value', etc.)
+
+To describe a database: describe database <database_name>;
+
+To describe a database with more details: describe database extended <database_name>;
+
+To alter a database: alter database <database_name> set dbproperties ('name'='value');
+
+To delete the database: drop database <database_name>;
+
+If database consists of tables: drop database <database_name> cascade; (default is 'restricted')
+------------------------------------------------------------
+Tables can be prepared in two ways: 1. Internal or Managed Table. 2. External Table.
+
+By default the tables created will be Internal Table. To create external table, we need to mention "external" explicitly.
+
+Before creating table, make sure you use the database so that created tables come withing that database.
+For that: use <database_name>;
+
+To create table: create table if not exists <table_name> (<attributes> <datatype>) row format delimited fields terminated by '<symbol used as delimiter like ,;\t>';
+
+To know available or created tables: show tables
+
+To describe table: describe <table_name>;
+
+To know whether table is internal/managed or external:
+describe formatted <table_name>;
+This will display complete metadata of the table. including the information whether it is internal or external.
+
+To create external table need to specify the location as well:
+create external table if not exist <table_name> (<attributes> <datatype>) row format delimited fields terminated by '<symbol used as delimiter like ,;\t>' location '<location>';
+
+Loading the data to the table: There are 3 ways: (1)Standalone. (2)Files. (3)Other tables.
+(1) Standalone:
+insert into <table_name> values (list_of_values);
+
+For multiple entries: insert into <table_name> values (list_of_values_1),(list_of_values_2),,,(list_of_values_n);
+
+(2)Files:
+If we need to import data from the File(txt, csv, etc.) to hive, we must create hive table as per the structure of the data in the file.
+Command: load data local inpath '<data_file_path>' into table <table_name>; (this is when the data is in local file system).
+
+Command: load data inpath '<HDFS_data_file_path>' into table <table_name>; (this is when the data is in Hadoop file system).
+
+(3)Other Tables:
+------------------------------------------------------------------------------
+To alter table:
+ALTER TABLE <table_name> ADD COLUMNS (<column_name data_type, ...>);
+ALTER TABLE <table_name> REPLACE COLUMNS (<column_name data_type, ...>);
+ALTER TABLE <table_name> RENAME TO <new_table_name>;
+ALTER TABLE <table_name> SET TBLPROPERTIES (<'property_name'='property_value'>);
+ALTER TABLE <table_name> CHANGE <column_name> <new_column_name new_datatype>;
+------------------------------------------------------------------------------
+Create view: create view <view_name> as <query_to_select_some_data> from <table_name>;
+
+To see the content of view: select * from <view_name>;
+
+To alter view: To change view name: alter view <old_view_name> rename to <new_view_name>;
+
+To alter view properties: alter view <view_name> set tblproperties (<some properties>);  Eg. ('comment' = 'This is an updated view');
+-----------------------------------------------------------------------------
+
+To delete view: drop view <view_name>;
+-------------------------------------------------------------------------------
